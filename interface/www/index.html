@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, target-densitydpi=medium-dpi" />
+
+        <link rel="stylesheet"  href="libs/jQM-flat/jquery.mobile.flatui.css">
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <script type="text/javascript" src="libs/fastclick.min.js"></script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <!--script type="text/javascript" src="libs/jquery-2.0.3.min.js"></script-->
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="libs/jQueryMobile/jquery.mobile-1.3.2.min.js"></script>
+        <script type="text/javascript" src="js/pouchdb-3.6.0.min.js"></script>
+        <title>App Name</title>
+    </head>
+    <body>
+        <div id="app">
+            <div id="login-page" data-role="page">
+                <div align="center">
+                    <img src="img/MomLink-App-Logo2.png" alt="momlink logo" style="width:150px;height:150px;margin-top:45px" align="center">
+                </div>
+
+                <div data-role="content">
+                    <form id="login-form">
+                        <fieldset class="ui-grid-solo">
+                            <div class="ui-block-a" style="width: 100%">
+                                 <input type="text" name="pncc-name" id="name" placeholder="Username" />
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-solo">
+                            <div class="ui-block-a" style="width: 100%">
+                                <input type="password" name="psw" id="psw" placeholder="Password" />
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-b" style="margin: 10% 8% 0 8%;">
+                            <div class="ui-block-a"></div>
+                            <div class="ui-block-b">
+                                <a href="#main-page" id="login_btn" name="login" data-role="button" style="margin: 0 -30% 0 -30%; border:1px solid;" data-theme-"a">Login</a>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div><!-- End of login page -->
+
+            <div id="main-page" data-role="page">
+                <div data-role="header" data-id="header" id="header" data-position="fixed" class="ui-header" style="background: lightgrey">
+                    <div class="ui-grid-c">
+                        <div class="ui-block-a" style="width: auto; margin: 5px;">
+                            <img src="img/MomLink-App-Logo2.png" alt="momlink logo" style="width:50px;height:50px; margin-top: 2px;">
+                        </div>
+                        <div class="ui-block-b" style="width: auto; margin-top: 7px;">
+                            <h2>MomLink</h2>
+                        </div>
+                        <div class="ui-block-d" style="margin: 5px; float:right;">
+                            <h2 style="magin-right: 10px; float:right;">
+                                <!-- <a href="#login-page" >Logout</a> -->
+                                <a href="#" class="logout_cancel">Logout</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <h2 id="date" align="center" style="border-bottom: 1px solid black; margin-top: 5px"></h2>
+
+                <div style="width: auto; float:center">
+                    <a href="#client-list-page" data-role="button" id = "clients_btn" data-theme="c" style="width: auto; margin: 15% 20% 0; border:1px solid">Clients</a>
+                </div>
+                <div style="width: auto; float:center">
+                    <a href="#demographic-page" data-role="button" id = "new_clients_btn" data-theme="c" style="width: auto; margin: 15% 20% 0; border:1px solid">New Clients</a>
+                </div>
+                <div style="width: auto; float:center">
+                    <a href="#demographic-page" data-role="button" id = "send_info_btn" data-theme="c" style="width: auto; margin: 15% 20% 0; border:1px solid">Send Information</a>
+                </div>
+                <div style="width: auto; float:center">
+                    <a href="#reference-page" data-role="button" id = "reference_btn" data-theme="c" style="width: auto; margin: 15% 20% 0; border:1px solid">Reference</a>
+                </div>
+                <div class="visit_reminder" id="visit_reminder">
+                    <h2 align="center" style="margin-top: 35px; border-top: 2px solid black; border-bottom: 2px solid black ">Scheduled Home Visits</h2>
+                    <!-- <fieldset id="reminder_checklist" class="ui-grid-a" data-role="controlgroup"></fieldset> -->
+                    <div id="reminder_checklist"></div>
+                </div>
+            </div><!-- <End of main page> -->
+
+            <div id="client-list-page" data-role="page">
+                <div data-role="header" data-id="header" id="header" data-position="fixed" class="ui-header" style="background: lightgrey">
+                    <div class="ui-grid-c">
+                        <div class="ui-block-a" style="width: auto; margin: 5px;">
+                            <img src="img/MomLink-App-Logo2.png" alt="momlink logo" style="width:50px;height:50px; margin-top: 2px;">
+                        </div>
+                        <div class="ui-block-b" style="width: auto; margin-top: 7px;">
+                            <h2>MomLink</h2>
+                        </div>
+                        <div class="ui-block-d" style="margin: 5px; float:right;">
+                            <h2 style="margin-right: 10px; float:right;">
+                                <a href="#main-page" >Close</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div data-role="content">
+                    <ul id="client_list" data-role="listview" data-filter="true"  data-autodividers="true" data-inset="true" data-filter-placeholder="Search">
+                    </ul>
+                </div>
+            </div><!-- <End of client-list-page> -->
+
+            <div id="home-visit-page" data-role="page">
+               <div data-role="header" data-id="header" id="header" data-position="fixed" class="ui-header" style="background: lightgrey">
+                    <div class="ui-grid-c">
+                        <div class="ui-block-a" style="width: auto; margin: 5px;">
+                            <img src="img/MomLink-App-Logo2.png" alt="momlink logo" style="width:50px;height:50px; margin-top: 2px;">
+                        </div>
+                        <div class="ui-block-b" style="width: auto; margin-top: 7px;">
+                            <h2>MomLink</h2>
+                        </div>
+                        <div class="ui-block-d" style="margin: 5px; float:right;">
+                            <h2 style="magin-right: 10px; float:right;">
+                                <a href="#save-page" >Close</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div data-role="content" style="padding-top: 5px">
+                    <form id="home-visit-form">
+                        <h2 id="home_visit_header" align="center" style="border-top:2px solid black; border-bottom: 1px solid black; margin-top: 15px">Home Visit</h2>
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a" id="trimester">
+                                <label for="trimester_assessment" id = "trimvisit_id">Trimester Assessment</label>
+                                <div class="ui-grid-b">
+                                    <div class="ui-block-a"></div>
+                                    <div class="ui-block-b"></div>
+                                    <div class="ui-block-c">
+                                        <button id="trim_plus_btn" name="plus_btn" data-icon="plus" data-iconpos="notext" data-theme="c"></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-block-c" id="regular" style="padding-left: 25%">
+                                <label for="regular_visit">Regular Visit</label>
+                                <div id="reg_date"></div>
+                                <div class="ui-grid-b">
+                                    <div class="ui-block-a"></div>
+                                    <div class="ui-block-b"></div>
+                                    <div class="ui-block-c">
+                                        <a href="#reg_visit" data-role="button" id="reg_plus_btn" name="plus_btn" data-icon="plus" data-iconpos="notext" data-theme="c"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="footer" data-role="footer" data-id="hv_footer" data-position="fixed" data-tap-toggle="false" data-theme="c">
+                    <fieldset class="ui-grid-a" style="margin: 0 8% 0 8%;">
+                        <div class="ui-block-a">
+                            <a href="#client-list-page" id="hv_back" data-role="button" data-icon="arrow-l" data-inline="true" data-theme="d" >Back</a>
+                        </div>
+                        <!-- <div class="ui-block-b" style="width: auto; float:right">
+                            <a href="#demographic-page" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b">Next</a>
+                        </div> -->
+                    </fieldset>
+                </div>
+            </div>
+            <!-- <End of home-visit-page> -->
+
+            <div id="navigation_page" data-role="page">
+                <div data-role="header" id="header" data-position="fixed" class="ui-header" style="background: lightgrey">
+                    <div class="ui-grid-c">
+                        <div class="ui-block-a" style="width: auto; margin: 5px;">
+                            <img src="img/MomLink-App-Logo2.png" alt="momlink logo" style="width:50px;height:50px; margin-top: 2px;">
+                        </div>
+                        <div class="ui-block-b" style="width: auto; margin-top: 7px;">
+                            <h2>MomLink</h2>
+                        </div>
+                        <div class="ui-block-d" style="margin: 5px; float:right;">
+                            <h2 style="magin-right: 10px; float:right;">
+                                <a href="#save-page">Close</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div data-role="content" style="padding-top: 5px">
+                    <form id="navigation-form">
+                        <h2 id="navigation_header" align="center" style="border-top: 2px solid black; border-bottom: 1px solid black; margin-top: 15px">Navigation Page</h2>
+
+                        <div style="widht: auto; float: center">
+                            <a href="#demographic-page" data-role="button" id="navi_demo" data-theme="c" style="width: auto; margin: 15% 20% 0; border: 1px solid">Demographic Page</a>
+                        </div>
+                        <div style="widht: auto; float: center">
+                            <a href="#medical-page" data-role="button" id="navi_medical" data-theme="c" style="width: auto; margin: 15% 20% 0; border: 1px solid">Medical Page</a>
+                        </div>
+                        <div style="widht: auto; float: center">
+                            <a href="#nutrition-page" data-role="button" id="navi_nutri" data-theme="c" style="width: auto; margin: 15% 20% 0; border: 1px solid">Nutrition Page</a>
+                        </div>
+                        <div style="widht: auto; float: center">
+                            <a href="#medication-page" data-role="button" id="navi_medication" data-theme="c" style="width: auto; margin: 15% 20% 0; border: 1px solid">Medication Page</a>
+                        </div>
+                        <div style="widht: auto; float: center">
+                            <a href="#smoking-page" data-role="button" id="navi_smok" data-theme="c" style="width: auto; margin: 15% 20% 0; border: 1px solid">Smoking Page</a>
+                        </div>
+                        <div style="widht: auto; float: center">
+                            <a href="#condition-page" data-role="button" id="navi_condi" data-theme="c" style="width: auto; margin: 15% 20% 0; border: 1px solid">Condition Page</a>
+                        </div>
+                    </form>
+                </div>
+                <div id="navi_footer" data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="c">
+                    <fieldset class="ui-grid-a" style="margin: 0 8% 0 8%">
+                        <div class="ui-block-a"></div>
+                        <div class="ui-block-b" style="width: auto; float:right">
+                            <a href="#main-page" data-role="button" id="ref_next" style="width: 65px" data-theme="b">Exit</a>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <!-- <End of navigation page> -->
+
+            <div id="reg_visit" data-role="page">
+                <div data-role="header" id="header" data-position="fixed" class="ui-header" style="background: lightgrey">
+                    <div class="ui-grid-c">
+                        <div class="ui-block-a" style="width: auto; margin: 5px;">
+                            <img src="img/MomLink-App-Logo2.png" alt="momlink logo" style="width:50px;height:50px; margin-top: 2px;">
+                        </div>
+                        <div class="ui-block-b" style="width: auto; margin-top: 7px;">
+                            <h2>MomLink</h2>
+                        </div>
+                        <div class="ui-block-d" style="margin: 5px; float:right;">
+                            <h2 style="magin-right: 10px; float:right;">
+                                <a href="#save-page">Close</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div data-role="content" class="ui-content" style="padding-top: 5px" >
+                   <form id="form_reg_visit" method="post" action="app.formSubmit()">
+                        <h2 id="new_reg" align="center" style="border-top:2px solid black; border-bottom: 1px solid black; margin-top: 15px">Regular Visit</h2>
+                        <div id="new_reg_content">
+                            <fieldset class="ui-grid-a" id="client_name">
+                               <div class="ui-block-a" id="client_name_a" style="margin-top: 10px">
+                                   <label for="client_name">Client Name</label>
+                               </div>
+                               <div class="ui-block-b" id="client_name_b">
+                                   <input name="reg_client_name" id="reg_client_name" />
+                               </div>
+                            </fieldset>
+                            <fieldset class="ui-grid-a" id="gestation">
+                                <div class="ui-block-a" id="gestation_week_a" style="margin-top: 10px">
+                                    <label for="gestation">Gestation Week</label>
+                                </div>
+                                <div class="ui-block-b" id="gestation_week_b">
+                                    <input name="gestation_week" id="gestation_week" />
+                                </div>
+                            </fieldset>
+                            <fieldset class="ui-grid-a" id="reg_date">
+                                <div class="ui-block-a" id="reg_date_a" style="margin-top: 10px; margin-bottom: 25px">
+                                    <label for="reg_date">Date:</label>
+                                </div>
+                                <div class="ui-block-b" id="reg_visit_date" style="margin-top: 13px">
+                                    <label for="reg_date" id="reg_date" name="reg_date"></label>
+                                </div>
+                            </fieldset>
+                            <fieldset class="ui-grid-a" id="next_reg_visit">
+                                <div class="ui-block-a" id="next_reg_date_a" style="margin-top: 10px; margin-bottom: 25px">
+                                    <label for="next_reg_date">Next Home Visit:</label>
+                                </div>
+                                <div class="ui-block-b" id="next_reg_date_b" style="margin-top: 13px">
+                                    <input name="next_homevisit_date" id="next_reg_date" type="date" />
+                                </div>
+                            </fieldset>
+                            <fieldset class="ui-grid-a" id="regular_meet">
+                                <div class="ui-block-a" id="meet" style="margin-top: 10px">
+                                    <label for="meet">Meeting Date</label>
+                                </div>
+                                <div class="ui-block-b" id="meet_id">
+                                    <input name="meet_date" id="meet_date_id" type="date" />
+                                </div>
+                            </fieldset>
+                            <fieldset class="ui-grid-a" id="conception">
+                                <div class="ui-block-a" id="conception_id_a" style="margin-top: 10px">
+                                    <label for="conception">Estimated Date of Conception</label>
+                                </div>
+                                <div class="ui-block-b" id="conception_id_b">
+                                    <input name="estimated_conception" id="conception_id" type="date" />
+                                </div>
+                            </fieldset>
+                            <fieldset class="ui-grid-a" id="meetType">
+                                <div class="ui-block-a" id="meetType_a" style="margin-top: 10px">
+                                    <label for="meetType">Type of Meeting</label>
+                                </div>
+                                <div class="ui-block-b" id="meetType_b">
+                                    <select name="meetType" id="meetType_id" data-mini="true" data-theme="c">
+                                        <option value="Choose one">Choose one</option>
+                                        <option value="Phone">Phone</option>
+                                        <option value="Mail">Mail</option>
+                                        <option value="Face-to-Face">Face-to-Face</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </fieldset>
+                            <fieldset class="ui-grid-a" id="babeCoupon">
+                                <div class="ui-block-a" id="babeCoupon_a" style="margin-top:10px">
+                                    <label for="babeCoupon">BABE Coupon?</label>
+                                </div>
+                                <div class="ui-block-b" style="width: 50%; padding-top: 10px;">
+                                    <select name="babeCoupon" id="babeCoupon_b" data-mini="true" data-theme="c" >
+                                        <option value="Choose one">Choose one</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </fieldset>
+                            <div id="narrative_notes_a">
+                                <label for="narrative">Narrative Notes:</label>
+                            </div>
+                            <div id="narrative_notes_b">
+                                <textarea name="narrative_notes" id="narrative_notes" rows="5"></textarea>
+                            </div>
+                            <div data-role="fieldcontain" class="topics" id="topics_id">
+                              <h2  align="left" style="margin-top:10px">Topics Covered (Select as many as needed)</h2>
+                              <fieldset data-role="controlgroup">
+                                <label for="topics-checkbox-1a">Abstinence</label>
+                                <input type="checkbox" name="topics-checkbox-1a" class="topic_information" id="topics-checkbox-1a"/>
+                                <label for="topics-checkbox-2a">Alcohol</label>
+                                <input type="checkbox" name="topics-checkbox-2a" class="topic_information" id="topics-checkbox-2a"/>
+                                <label for="topics-checkbox-3a">Anticipatory Guidance</label>
+                                <input type="checkbox" name="topics-checkbox-3a" class="topic_information" id="topics-checkbox-3a"/>
+                                <label for="topics-checkbox-4a">Baby Growth</label>
+                                <input type="checkbox" name="topics-checkbox-4a" class="topic_information" id="topics-checkbox-4a"/>
+                                <label for="topics-checkbox-5a">Breast Feeding</label>
+                                <input type="checkbox" name="topics-checkbox-5a" class="topic_information" id="topics-checkbox-5a"/>
+                                <label for="topics-checkbox-6a">Child Abuse</label>
+                                <input type="checkbox" name="topics-checkbox-6a" class="topic_information" id="topics-checkbox-6a"/>
+                                <label for="topics-checkbox-7a">Community Resources</label>
+                                <input type="checkbox" name="topics-checkbox-7a" class="topic_information" id="topics-checkbox-7a"/>
+                                <label for="topics-checkbox-8a">Copying Skills</label>
+                                <input type="checkbox" name="topics-checkbox-8a" class="topic_information" id="topics-checkbox-8a"/>
+                                <label for="topics-checkbox-9a">Dental Health</label>
+                                <input type="checkbox" name="topics-checkbox-9a" class="topic_information" id="topics-checkbox-9a"/>
+                                <label for="topics-checkbox-10a">Domestic Violence</label>
+                                <input type="checkbox" name="topics-checkbox-10a" class="topic_information" id="topics-checkbox-10a"/>
+                                <label for="topics-checkbox-11a">Drug Cessation</label>
+                                <input type="checkbox" name="topics-checkbox-11a" class="topic_information" id="topics-checkbox-11a"/>
+                                <label for="topics-checkbox-12a">Family Planning</label>
+                                <input type="checkbox" name="topics-checkbox-12a" class="topic_information" id="topics-checkbox-12a"/>
+                                <label for="topics-checkbox-13a">Financial Planning</label>
+                                <input type="checkbox" name="topics-checkbox-13a" class="topic_information" id="topics-checkbox-13a"/>
+                                <label for="topics-checkbox-14a">General Advice</label>
+                                <input type="checkbox" name="topics-checkbox-14a" class="topic_information" id="topics-checkbox-14a"/>
+                                <label for="topics-checkbox-15a">Health Care</label>
+                                <input type="checkbox" name="topics-checkbox-15a" class="topic_information" id="topics-checkbox-15a"/>
+                                <label for="topics-checkbox-16a">HIV Risks</label>
+                                <input type="checkbox" name="topics-checkbox-16a" class="topic_information" id="topics-checkbox-16a"/>
+                                <label for="topics-checkbox-17a">Illness Care</label>
+                                <input type="checkbox" name="topics-checkbox-17a" class="topic_information" id="topics-checkbox-17a"/>
+                                <label for="topics-checkbox-18a">Infant Care</label>
+                                <input type="checkbox" name="topics-checkbox-18a" class="topic_information" id="topics-checkbox-18a"/>
+                                <label for="topics-checkbox-19a">Infant Feeding</label>
+                                <input type="checkbox" name="topics-checkbox-19a" class="topic_information" id="topics-checkbox-19a"/>
+                                <label for="topics-checkbox-20a">Infant Sleep</label>
+                                <input type="checkbox" name="topics-checkbox-20a" class="topic_information" id="topics-checkbox-20a"/>
+                                <label for="topics-checkbox-21a">Infant Stimulation</label>
+                                <input type="checkbox" name="topics-checkbox-21a" class="topic_information" id="topics-checkbox-21a"/>
+                                <label for="topics-checkbox-22a">Labor Delivery</label>
+                                <input type="checkbox" name="topics-checkbox-22a" class="topic_information" id="topics-checkbox-22a"/>
+                                <label for="topics-checkbox-23a">Lessons Learned</label>
+                                <input type="checkbox" name="topics-checkbox-23a" class="topic_information" id="topics-checkbox-23a"/>
+                                <label for="topics-checkbox-24a">Manage Discomforts</label>
+                                <input type="checkbox" name="topics-checkbox-24a" class="topic_information" id="topics-checkbox-24a"/>
+                                <label for="topics-checkbox-25a">Newborn Care</label>
+                                <input type="checkbox" name="topics-checkbox-25a" class="topic_information" id="topics-checkbox-25a"/>
+                                <label for="topics-checkbox-26a">Normal Discomforts</label>
+                                <input type="checkbox" name="topics-checkbox-26a" class="topic_information" id="topics-checkbox-26a"/>
+                                <label for="topics-checkbox-27a">Nutrition</label>
+                                <input type="checkbox" name="topics-checkbox-27a" class="topic_information" id="topics-checkbox-27a"/>
+                                <label for="topics-checkbox-28a">Parenting</label>
+                                <input type="checkbox" name="topics-checkbox-28a" class="topic_information" id="topics-checkbox-28a"/>
+                                <label for="topics-checkbox-29a">Postpartum Care</label>
+                                <input type="checkbox" name="topics-checkbox-29a" class="topic_information" id="topics-checkbox-29a"/>
+                                <label for="topics-checkbox-30a">Prenatal Care</label>
+                                <input type="checkbox" name="topics-checkbox-30a" class="topic_information" id="topics-checkbox-30a"/>
+                                <label for="topics-checkbox-31a">Prenatal Weight</label>
+                                <input type="checkbox" name="topics-checkbox-31a" class="topic_information" id="topics-checkbox-31a"/>
+                                <label for="topics-checkbox-32a">Preterm Labor</label>
+                                <input type="checkbox" name="topics-checkbox-32a" class="topic_information" id="topics-checkbox-32a"/>
+                                <label for="topics-checkbox-33a">Safty</label>
+                                <input type="checkbox" name="topics-checkbox-33a" class="topic_information" id="topics-checkbox-33a"/>
+                                <label for="topics-checkbox-34a">Secondhand Smoke</label>
+                                <input type="checkbox" name="topics-checkbox-34a" class="topic_information" id="topics-checkbox-34a"/>
+                                <label for="topics-checkbox-35a">Smoking Cessation</label>
+                                <input type="checkbox" name="topics-checkbox-35a" class="topic_information" id="topics-checkbox-35a"/>
+                                <label for="topics-checkbox-36a">STD infection</label>
+                                <input type="checkbox" name="topics-checkbox-36a" class="topic_information" id="topics-checkbox-36a"/>
+                                <label for="topics-checkbox-37a">Stress Management</label>
+                                <input type="checkbox" name="topics-checkbox-37a" class="topic_information" id="topics-checkbox-37a"/>
+                                <label for="topics-checkbox-38a">Vitamins</label>
+                                <input type="checkbox" name="topics-checkbox-38a" class="topic_information" id="topics-checkbox-38a"/>
+                                <label for="topics-checkbox-39a">Warning Signs</label>
+                                <input type="checkbox" name="topics-checkbox-39a" class="topic_information" id="topics-checkbox-39a"/>
+                              </fieldset>
+                              <h2  align="left" style="margin-top:10px">Referrals Made (Select as many as needed)</h2>
+                              <fieldset data-role="controlgroup">
+                                <label for="referralsMade-checkbox-1a">Addiction Services</label>
+                                <input type="checkbox" name="referralsMade-checkbox-1a" class="referralsMade_information" id="referralsMade-checkbox-1a"/>
+                                <label for="referralsMade-checkbox-2a">Child Care</label>
+                                <input type="checkbox" name="referralsMade-checkbox-2a" class="referralsMade_information" id="referralsMade-checkbox-2a"/>
+                                <label for="referralsMade-checkbox-3a">Childbirth Education</label>
+                                <input type="checkbox" name="referralsMade-checkbox-3a" class="referralsMade_information" id="referralsMade-checkbox-3a"/>
+                                <label for="referralsMade-checkbox-4a">Clothing and Furniture</label>
+                                <input type="checkbox" name="treferralsMade-checkbox-4a" class="referralsMade_information" id="referralsMade-checkbox-4a"/>
+                                <label for="referralsMade-checkbox-5a">Domestic Violence Program</label>
+                                <input type="checkbox" name="referralsMade-checkbox-5a" class="referralsMade_information" id="referralsMade-checkbox-5a"/>
+                                <label for="referralsMade-checkbox-6a">Education and Training</label>
+                                <input type="checkbox" name="referralsMade-checkbox-6a" class="referralsMade_information" id="referralsMade-checkbox-6a"/>
+                                <label for="referralsMade-checkbox-7a">Employment Assistance</label>
+                                <input type="checkbox" name="referralsMade-checkbox-7a" class="referralsMade_information" id="referralsMade-checkbox-7a"/>
+                                <label for="referralsMade-checkbox-8a">Family Planning/Parenting</label>
+                                <input type="checkbox" name="referralsMade-checkbox-8a" class="referralsMade_information" id="referralsMade-checkbox-8a"/>
+                                <label for="referralsMade-checkbox-9a">Financial Assistance</label>
+                                <input type="checkbox" name="referralsMade-checkbox-9a" class="referralsMade_information" id="referralsMade-checkbox-9a"/>
+                                <label for="referralsMade-checkbox-10a">Food and Nutrition</label>
+                                <input type="checkbox" name="referralsMade-checkbox-10a" class="referralsMade_information" id="referralsMade-checkbox-10a"/>
+                                <label for="referralsMade-checkbox-11a">Genetic Counseling</label>
+                                <input type="checkbox" name="referralsMade-checkbox-11a" class="referralsMade_information" id="referralsMade-checkbox-11a"/>
+                                <label for="referralsMade-checkbox-12a">High Risk Management</label>
+                                <input type="checkbox" name="referralsMade-checkbox-12a" class="referralsMade_information" id="referralsMade-checkbox-12a"/>
+                                <label for="referralsMade-checkbox-13a">HIV Care Coordination</label>
+                                <input type="checkbox" name="referralsMade-checkbox-13a" class="referralsMade_information" id="referralsMade-checkbox-13a"/>
+                                <label for="referralsMade-checkbox-14a">Home Care</label>
+                                <input type="checkbox" name="referralsMade-checkbox-14a" class="referralsMade_information" id="referralsMade-checkbox-14a"/>
+                                <label for="referralsMade-checkbox-15a">Housing Assistance</label>
+                                <input type="checkbox" name="referralsMade-checkbox-15a" class="referralsMade_information" id="referralsMade-checkbox-15a"/>
+                                <label for="referralsMade-checkbox-16a">Human Services</label>
+                                <input type="checkbox" name="referralsMade-checkbox-16a" class="referralsMade_information" id="referralsMade-checkbox-16a"/>
+                                <label for="referralsMade-checkbox-17a">Lactation Consultant</label>
+                                <input type="checkbox" name="referralsMade-checkbox-17a" class="referralsMade_information" id="referralsMade-checkbox-17a"/>
+                                <label for="referralsMade-checkbox-18a">Legal Services</label>
+                                <input type="checkbox" name="referralsMade-checkbox-18a" class="referralsMade_information" id="referralsMade-checkbox-18a"/>
+                                <label for="referralsMade-checkbox-19a">Medicaid/Managed Care</label>
+                                <input type="checkbox" name="referralsMade-checkbox-19a" class="referralsMade_information" id="referralsMade-checkbox-19a"/>
+                                <label for="referralsMade-checkbox-20a">Mental Health</label>
+                                <input type="checkbox" name="referralsMade-checkbox-20a" class="referralsMade_information" id="referralsMade-checkbox-20a"/>
+                                <label for="referralsMade-checkbox-21a">Prenatal Care</label>
+                                <input type="checkbox" name="referralsMade-checkbox-21a" class="referralsMade_information" id="referralsMade-checkbox-21a"/>
+                                <label for="referralsMade-checkbox-22a">Smoking Cessation</label>
+                                <input type="checkbox" name="referralsMade-checkbox-22a" class="referralsMade_information" id="referralsMade-checkbox-22a"/>
+                                <label for="referralsMade-checkbox-23a">Social Services</label>
+                                <input type="checkbox" name="referralsMade-checkbox-23a" class="referralsMade_information" id="referralsMade-checkbox-23a"/>
+                                <label for="referralsMade-checkbox-24a">Support Groups</label>
+                                <input type="checkbox" name="referralsMade-checkbox-24a" class="referralsMade_information" id="referralsMade-checkbox-24a"/>
+                                <label for="referralsMade-checkbox-25a">Township Trustee</label>
+                                <input type="checkbox" name="referralsMade-checkbox-25a" class="referralsMade_information" id="referralsMade-checkbox-25a"/>
+                                <label for="referralsMade-checkbox-26a">Transportation</label>
+                                <input type="checkbox" name="referralsMade-checkbox-26a" class="referralsMade_information" id="referralsMade-checkbox-26a"/>
+                                <label for="referralsMade-checkbox-27a">Utility Assistance</label>
+                                <input type="checkbox" name="referralsMade-checkbox-27a" class="referralsMade_information" id="referralsMade-checkbox-27a"/>
+                                <label for="referralsMade-checkbox-28a">Women and Child Health</label>
+                                <input type="checkbox" name="referralsMade-checkbox-28a" class="referralsMade_information" id="referralsMade-checkbox-28a"/>
+                              </fieldset>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="reg_visit_footer" data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="c">
+                    <fieldset class="ui-grid-a" style="margin: 0 8% 0 8%">
+                        <div class="ui-block-a">
+                            <a href="#main-page" data-role="button" id="reg_cancel" data-inline="true" data-theme="d">Cancel</a>
+                        </div>
+                        <div class="ui-block-b" style="width: auto; float:right">
+                            <a href="#save-page" data-role="button" id="reg_next" style="width: 65px" data-theme="b" data-icon="arrow-r" data-iconpos="right">Next</a>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <!-- <End of regular visit page> -->
+
+            <div id="demographic-page" data-role="page">
+                <div data-role="header" data-id="header" id="header" data-position="fixed" class="ui-header" style="background: lightgrey">
+                    <div class="ui-grid-c">
+                        <div class="ui-block-a" style="width: auto; margin: 5px;">
+                            <img src="img/MomLink-App-Logo2.png" alt="momlink logo" style="width:50px;height:50px; margin-top: 2px;">
+                        </div>
+                        <div class="ui-block-b" style="width: auto; margin-top: 7px;">
+                            <h2>MomLink</h2>
+                        </div>
+                        <div class="ui-block-d" style="margin: 5px; float:right;">
+                            <h2 style="magin-right: 10px; float:right;">
+                                <a href="#save-page" >Close</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div data-role="content" class="ui-content" style="padding-top: 5px" >
+                    <form id="demographic-form" method="post" action="app.formSubmit()">
+                        <h2 id="demographic" align="center" style="border-top:2px solid black; border-bottom: 1px solid black; margin-top: 15px">Demographic Information</h2>
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a" id="current_date_id">
+                                <label for="current_date"></label>
+                            </div>
+                            <div class="ui-block-b" style="float:right">
+                                <span style="float:right"><label for="patient_name" id="patient_name"></label></span>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a" >
+                            <div class="ui-block-a">
+                                <label for="age">Age:</label>
+                            </div>
+                            <!-- <div class="ui-block-b" style="width: 15%">
+                                <input type="number" name="age" id="age" />
+                            </div> -->
+                            <div class="ui-block-b" id="age">
+                                <label for="age" id="age_id"></label>
+                            </div>
+                        </fieldset>
+
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="how_many_months_weeks">How many months/weeks?</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 25%">
+                                <input type="number" name="how_many_months_weeks" id="how_many_months_weeks" />
+                            </div>
+                        </div>
+
+                        <fieldset class="ui-grid-d">
+                            <div class="ui-block-a" style ="margin-top: 15px; width:auto">
+                                <label for="prepregnancy_weight">Pre-pregnancy weight:</label>
+                            </div>
+                            <div class="ui-block-b" style="margin-left: 15px">
+                                <input name="pre_pounds" id="pre_weight_lb" />
+                            </div>
+                            <div class="ui-block-c" style="width: auto; margin-top: 15px; margin-left: 5px">
+                                <label for="pregnancy_weight_lb">lb</label>
+                            </div>
+                            <div class="ui-block-d" style="margin-left: 5px">
+                                <input name="pre_ounces" id="pre_weight_oz" />
+                            </div>
+                            <div class="ui-block-e" style="width: auto; margin-top: 15px; margin-left: 5px">
+                                <label for="pregnancy_weight_oz">oz</label>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a" style="margin-top: 15px">
+                                <label for="prepregnancy_bmi">Pre-pregnancy BMI:</label>
+                            </div>
+                            <div class="ui-block-b" style="margin-top: 0px">
+                                <input name="pre_bmi" id = "pre_bmi" />
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-d">
+                            <div class="ui-block-a" style="margin-top: 15px;width: auto">
+                                <label for="curr_weight">Current Weight:</label>
+                            </div>
+                            <div class="ui-block-b" style="margin-left: 8px;">
+                                <input class="weight" name="weight_pounds" id="pounds" />
+                            </div>
+                            <div class="ui-block-c" style="width: auto; margin-left: 5px;">
+                                <label for="pounds">lb</label>
+                            </div>
+                            <div class="ui-block-d" style="margin-left: 8px;">
+                                <input class ="weight" name="weight_ounces" id="ounces" />
+                            </div>
+                            <div class="ui-block-e" style="width: auto; margin-left: 5px;">
+                                <label for="ounces">oz</label>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label id="weight_status_id" for="weight_status" >Weight status:</label>
+                            </div>
+                            <div class="ui-block-b" id="weight_status"></div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="next_appt_date">Next MD Appt.</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 55%">
+                                <input type="date" name="next_appt_date" id="next_appt_date" />
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="residence">Place of residence:</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 50%; padding-top: 10px;">
+                                <select name="residence" id="residence" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a" id="moved_id" style="display:none">
+                            <div class="ui-block-a">
+                                <label for="moved">Moved: </label>
+                            </div>
+                            <div class="ui-block-b" style="width: 50%; padding-top: 10px;">
+                                <select name="moved" id="moved" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a" id="address_id" style="display:none">
+                            <div class="ui-block-a">
+                                <label for="address">Address:</label>
+                            </div>
+                            <div class="ui-block-b" style="width: auto;">
+                                <input type="text" name="address" id="address" />
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a" id="utilities_id" style="display:none">
+                            <div class="ui-block-a">
+                                <label for="utilities_working">Utilities Working: </label>
+                            </div>
+                            <div class="ui-block-b" style="width: 50%; padding-top: 10px;">
+                                <select name="utilities" id="utilities_working" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a" id="transportation_id">
+                            <div class="ui-block-a">
+                                <label for="transportation">Need help with transportation?</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 30%; padding-top: 10px;">
+                                <select name="transportation" id="transportation" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="fob">FOB involved: </label>
+                            </div>
+                            <div class="ui-block-b" style="padding-top: 10px;">
+                                <select name="fob" id="fob" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <div data-role="fieldcontain" class="ref-div" id="demographic-ref-id" style="display:none">
+                            <h2 id="ref" align="center" style="border-top:2px solid black; border-bottom: 1px solid black; margin-top: 15px">Referral Information</h2>
+                            <h2 id="ref-name" align="left" style="margin-top:10px">Housing Information:</h2>
+                            <fieldset data-role="controlgroup">
+                                <label for="demo-checkbox-1a">St. Vincent de Paul (Thrift Stores)</label>
+                                <input type="checkbox" name="demo-checkbox-1a" class="ref_information" id="demo-checkbox-1a"/>
+                                <label for="demo-checkbox-2a">YWCA(sefl-sufficiency services, chemical dependency treatment, & domestic violence shelter for women & children only)</label>
+                                <input type="checkbox" name="demo-checkbox-2a" class="ref_information" id="demo-checkbox-2a"/>
+                                <label for="demo-checkbox-3a">Catholic Worker</label>
+                                <input type="checkbox" name="demo-checkbox-3a" class="ref_information" id="demo-checkbox-3a"/>
+                                <label for="demo-checkbox-4a">Housing Authority of South Bend(Section 8, Public Housing)</label>
+                                <input type="checkbox" name="demo-checkbox-4a" class="ref_information" id="demo-checkbox-4a"/>
+                                <label for="demo-checkbox-5a">Hannah's House (Pregnant women)</label>
+                                <input type="checkbox" name="demo-checkbox-5a" class="ref_information" id="demo-checkbox-5a"/>
+                                <label for="demo-checkbox-6a">Hope Ministries</label>
+                                <input type="checkbox" name="demo-checkbox-6a" class="ref_information" id="demo-checkbox-6a"/>
+                                <label for="demo-checkbox-7a">Center for the Homeless</label>
+                                <input type="checkbox" name="demo-checkbox-7a" class="ref_information" id="demo-checkbox-7a"/>
+                                <label for="demo-checkbox-8a">St. Margaret's House(Daytime shelter w/meals & laundry facilities for women w/children)</label>
+                                <input type="checkbox" name="demo-checkbox-8a" class="ref_information" id="demo-checkbox-8a"/>
+                                <label for="demo-checkbox-9a">Safe Station (Ages 12 -18 yrs)</label>
+                                <input type="checkbox" name="demo-checkbox-9a" class="ref_information" id="demo-checkbox-9a"/>
+                                <label for="demo-checkbox-10a">Dolly's House (Temporary/emergency housing)</label>
+                                <input type="checkbox" name="demo-checkbox-10a" class="ref_information" id="demo-checkbox-10a"/>
+                                <label for="demo-checkbox-11a">Porch Light Transitional Living</label>
+                                <input type="checkbox" name="demo-checkbox-11a" class="ref_information" id="demo-checkbox-11a"/>
+                                <label for="demo-checkbox-12a">Healthy Homes Assistance Program(Lead, home repair, pests, etc.)</label>
+                                <input type="checkbox" name="demo-checkbox-12a" class="ref_information" id="demo-checkbox-12a"/>
+                            </fieldset>
+                        </div>
+
+                        <div data-role="fieldcontain" class="ref-div" id="demographic-ref2-id" style="display:none">
+                            <h2 id="ref" align="center" style="border-top:2px solid black; border-bottom: 1px solid black; margin-top: 15px">Referral Information</h2>
+                            <h2 id="ref-name" align="left" style="margin-top:10px">Financial Needs:</h2>
+                            <fieldset data-role="controlgroup">
+                                <label for="demo2-checkbox-1a">Hoosier Healthwise(Medicaid)</label>
+                                <input type="checkbox" name="demo2-checkbox-1a" class="ref_information" id="demo2-checkbox-1a"/>
+                                <label for="demo2-checkbox-2a">Township Trustee(Emergency Financial Assistance)</label>
+                                <input type="checkbox" name="demo2-checkbox-2a" class="ref_information" id="demo2-checkbox-2a"/>
+                                <label for="demo2-checkbox-3a">TANF</label>
+                                <input type="checkbox" name="demo2-checkbox-3a" class="ref_information" id="demo2-checkbox-3a"/>
+                                <label for="demo2-checkbox-4a">Office of Prosecutor for Child Support &/or Paternity</label>
+                                <input type="checkbox" name="demo2-checkbox-4a" class="ref_information" id="demo2-checkbox-4a"/>
+                                <label for="demo2-checkbox-5a">St. Margaret's House(Budget Counseling)</label>
+                                <input type="checkbox" name="demo2-checkbox-5a" class="ref_information" id="demo2-checkbox-5a"/>
+                                <label for="demo2-checkbox-6a">Stone Soup</label>
+                                <input type="checkbox" name="demo2-checkbox-6a" class="ref_information" id="demo2-checkbox-6a"/>
+                                <label for="demo2-checkbox-7a">Real Services(Energy Assistance & Family Development)</label>
+                                <input type="checkbox" name="demo2-checkbox-7a" class="ref_information" id="demo2-checkbox-7a"/>
+                                <label for="demo2-checkbox-8a">Social Security Office</label>
+                                <input type="checkbox" name="demo2-checkbox-8a" class="ref_information" id="demo2-checkbox-8a"/>
+                                <label for="demo2-checkbox-9a">Catholic Charities(Foreclosure Prevention)</label>
+                                <input type="checkbox" name="demo2-checkbox-9a" class="ref_information" id="demo2-checkbox-9a"/>
+                                <label for="demo2-checkbox-10a">Family Resource Center(Kroc Center Food Pantry)</label>
+                                <input type="checkbox" name="demo2-checkbox-10a" class="ref_information" id="demo2-checkbox-10a"/>
+                            </fieldset>
+                            <h2 id="ref-name" align="left" style="margin-top:10px">Counseling Services:</h2>
+                            <fieldset data-role="controlgroup">
+                                <label for="care-checkbox-1a">Women's Care Center(Pregnancy tesing, referals, counseling,&parenting classes)</label>
+                                <input type="checkbox" name="care-checkbox-1a" class="ref_information" id="care-checkbox-1a"/>
+                                <label for="para-checkbox-2a">Planned Parenthood</label>
+                                <input type="checkbox" name="para-checkbox-2a" class="ref_information" id="para-checkbox-2a"/>
+                                <label for="health-checkbox-3a">Olive Street Health Center</label>
+                                <input type="checkbox" name="health-checkbox-3a" class="ref_information" id="health-checkbox-3a"/>
+                                <label for="justice-checkbox-4a">Family Justice Center(&S.O.S.)</label>
+                                <input type="checkbox" name="justice-checkbox-4a" class="ref_information" id="justice-checkbox-4a"/>
+                                <label for="memorial-checkbox-5a">Memorial Epworth Center(Inpatient)</label>
+                                <input type="checkbox" name="memorial-checkbox-5a" class="ref_information" id="memorial-checkbox-5a"/>
+                                <label for="ywca-checkbox-6a">YWCA(Counseling for domestic violence, drug dependency, economic empowerment,&sexual assault)</label>
+                                <input type="checkbox" name="ywca-checkbox-6a" class="ref_information" id="ywca-checkbox-6a"/>
+                                <label for="hotline-checkbox-7a">Suicide&Crisis Hotline</label>
+                                <input type="checkbox" name="hotline-checkbox-7a" class="ref_information" id="hotline-checkbox-7a"/>
+                                <label for="counsel-checkbox-8a">Women's Pavillion(Counseling)</label>
+                                <input type="checkbox" name="counsel-checkbox-8a" class="ref_information" id="counsel-checkbox-8a"/>
+                                <label for="oaklawn-checkbox-9a">Oaklawn(Outpatient counseling)</label>
+                                <input type="checkbox" name="oaklawn-checkbox-9a" class="ref_information" id="oaklawn-checkbox-9a"/>
+                                <label for="management-checkbox-10a">St. Margaret's House(Case management)</label>
+                                <input type="checkbox" name="management-checkbox-10a" class="ref_information" id="management-checkbox-10a"/>
+                            </fieldset>
+
+                            <h2 id="ref-name" align="left" style="margin-top:10px">Education&Training:</h2>
+                            <fieldset data-role="controlgroup">
+                                <label for="edu-checkbox-1a">Healthy Families</label>
+                                <input type="checkbox" name="edu-checkbox-1a" class="ref_information" id="edu-checkbox-1a"/>
+                                <label for="edu-checkbox-2a">School Age Mother's Program(must start school during pregnancy)</label>
+                                <input type="checkbox" name="edu-checkbox-2a" class="ref_information" id="edu-checkbox-2a"/>
+                                <label for="edu-checkbox-3a">Rise Up Academy(Must have completed 9th Grade)</label>
+                                <input type="checkbox" name="edu-checkbox-3a" class="ref_information" id="edu-checkbox-3a"/>
+                                <label for="edu-checkbox-4a">South Bend School Corp: Adult Ed Dept.(GED, ABE, EL Classes)</label>
+                                <input type="checkbox" name="edu-checkbox-4a" class="ref_information" id="edu-checkbox-4a"/>
+                                <label for="edu-checkbox-5a">The Crossings(Job training, returning student) </label>
+                                <input type="checkbox" name="edu-checkbox-5a" class="ref_information" id="edu-checkbox-5a"/>
+                                <label for="edu-checkbox-6a">South Bend School Corp: Bilingual Dept.</label>
+                                <input type="checkbox" name="edu-checkbox-6a" class="ref_information" id="edu-checkbox-6a"/>
+                                <label for="edu-checkbox-7a">School City of Mishawaka(Night school & day alternative prgm.)</label>
+                                <input type="checkbox" name="edu-checkbox-7a" class="ref_information" id="edu-checkbox-7a"/>
+                                <label for="edu-checkbox-8a">Penn-Harris-Madison School Corp.</label>
+                                <input type="checkbox" name="edu-checkbox-8a" class="ref_information" id="edu-checkbox-8a"/>
+                                <label for="edu-checkbox-9a">Young Mom's Self-Sufficiency Program(Ages 16-24)</label>
+                                <input type="checkbox" name="edu-checkbox-9a" class="ref_information" id="edu-checkbox-9a"/>
+                                <label for="edu-checkbox-10a">Work One</label>
+                                <input type="checkbox" name="edu-checkbox-10a" class="ref_information" id="edu-checkbox-10a"/>
+                                <label for="edu-checkbox-11a">Elkhart & St. Joseph County Headstart Consortium  (Ages 3-5 yrs)</label>
+                                <input type="checkbox" name="edu-checkbox-11a" class="ref_information" id="edu-checkbox-11a"/>
+                                <label for="edu-checkbox-12a">Caltholic Charities(ECHO: Assists parents under 24 yrs with education/living skills/career planning/ESL/Citzenship classes)</label>
+                                <input type="checkbox" name="edu-checkbox-12a" class="ref_information" id="edu-checkbox-12a"/>
+                                <label for="edu-checkbox-13a">La Casa de Amistad(GED in Spanish, ENL, Citizen classes, Spanish classes)</label>
+                                <input type="checkbox" name="edu-checkbox-13a" class="ref_information" id="edu-checkbox-13a"/>
+                                <label for="edu-checkbox-14a">IMPACT(Job Training)</label>
+                                <input type="checkbox" name="edu-checkbox-14a" class="ref_information" id="edu-checkbox-14a"/>
+                            </fieldset>
+                        </div>
+                    </form>
+                </div>
+                <div id="footer" data-role="footer" data-id="footer1" data-position="fixed" data-tap-toggle="false" data-theme="c">
+                    <fieldset class="ui-grid-a" style="margin: 0 8% 0 8%;">
+                        <div class="ui-block-a">
+                            <a href="#" id="demogra_back" data-role="button" data-icon="arrow-l" data-inline="true" data-theme="d" >Back</a>
+                        </div>
+                        <div class="ui-block-b" style="width: auto; float:right">
+                            <a href="#medical-page" id="demogra_next" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b">Next</a>
+                        </div>
+                    </fieldset>
+                </div>
+            </div><!-- End of demographic-page -->
+
+            <div id="medical-page" data-role="page">
+                <div data-role="header" data-id="header" id="header" data-position="fixed" class="ui-header" style="background: lightgrey">
+                    <div class="ui-grid-c">
+                        <div class="ui-block-a" style="width: auto; margin: 5px;">
+                            <img src="img/MomLink-App-Logo2.png" alt="momlink logo" style="width:50px;height:50px; margin-top: 2px;">
+                        </div>
+                        <div class="ui-block-b" style="width: auto; margin-top: 7px;">
+                            <h2>MomLink</h2>
+                        </div>
+                        <div class="ui-block-d" style="margin: 5px; float:right;">
+                            <h2 style="magin-right: 10px; float:right;">
+                                <a href="#save-page" >Close</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div data-role="content">
+                    <form id="medical-form" action="">
+                        <h2 id="medical" align="center" style="border-top:2px solid black; border-bottom: 1px solid black; margin-top: 15px">Medical Information</h2>
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="medical_provider">Do you have a medical provider?</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 30%; margin-top: 0px">
+                                <select name="med_provider" id="med_provider" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-solo" id="clinic_addr" style="margin-bottom: 15px; display:none">
+                            <div class="ui-block-a" style="width: 100%">
+                                <input name="clinic_addr" placeholder="Address of the clinic/hospital" />
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-solo" id="insurance_id">
+                            <div class="ui-grid-a">
+                                <label for="insurance">Do you have insurance?</label>
+                            </div>
+                        </fieldset>
+
+                        <div class="dropdown_insurance">
+                            <!-- <select name="insurance" id="dropdown_insurance" data-native-menu="false" data-mini="true" data-theme="c" data-role="select"> -->
+                            <select name="insurance" id="dropdown_insurance" data-mini="true" data-theme="c">
+                                <option value="Choose one">Choose one</option>
+                                <option value="Private">Private</option>
+                                <option value="Self">Self</option>
+                                <option value="Medicate">Medicate</option>
+                                <option value="Qualifies for medicate">Qualifies for medicate</option>
+                                <option value="Does not qualify for medicate">Does not qualify for medicate</option>
+                                <option value="None">None</option>
+                            </select>
+
+                                <fieldset class="ui-grid-solo" id="insurance_name_id" style="margin-bottom: 15px; display:none">
+                                    <div class="ui-block-a" style="width: 100%">
+                                        <input name="insurance_name" id="insurance_name" placeholder="What's the name of insurance?" />
+                                    </div>
+                                </fieldset>
+                                <div data-role="fieldcontain" class="medicate" id="medicate_id" style="display:none">
+                                    <fieldset class="ui-grid-a" id="pe" data-theme="c">
+                                        <div class="ui-block-a">
+                                            <label for="pe_or_pkg">pe or pkg_e:</label>
+                                        </div>
+                                        <div class="ui-block-b" style="width: 50%; padding-top: 0px">
+                                            <select name="package_e" id="package_id" data-mini="true" data-theme="c" >
+                                                <option value="Choose one">Choose one</option>
+                                                <option value="PE">PE</option>
+                                                <option value="Pkg E">Pkg E</option>
+                                            </select>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="ui-grid-solo" id="enroll_date_id" style="margin-top: 15px; margin-bottom: 15px">
+                                        <div class="ui-block-a">
+                                            <input name="enroll_date" style="width: 100%"placeholder="What's the date of enrollment?" />
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="ui-grid-solo" id="rid_id" style="margin-bottom: 15px">
+                                        <div class="ui-block-a" style="width: 100%">
+                                            <input name="rid" placeholder="Client's RID" />
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <ul style="margin-top: 0px; margin-bottom: 0px">
+                                    <div data-role="fieldcontain" class="medicate_qualify" id="med_qualify" style="display:none">
+                                        <!-- <fieldset data-role="controlgroup">
+                                            <label for="insurance-subcheckbox-1a">PE enrollment today</label>
+                                            <input type="checkbox" name="insurance-subcheckbox-1a" class="med_qualify_type" id="insurance-subcheckbox-1a">
+                                            <label for="insurance-subcheckbox-2a">Assisting with Pkg E today</label>
+                                            <input type="checkbox" name="insurance-subcheckbox-2a" class="med_qualify_type" id="insurance-subcheckbox-2a">
+                                            <label for="insurance-subcheckbox-3a">Refused medicate</label>
+                                            <input type="checkbox" name="insurance-subcheckbox-3a" class="med_qualify_type" id="insurance-subcheckbox-3a">
+                                        </fieldset> -->
+
+                                        <select name="medicate_qual_select" id="medi_qual_select" data-mini="true" data-theme="c" >
+                                            <option value="Choose one">Choose one</option>
+                                            <option value="Assisting with Pkg E today">Assisting with Pkg E today</option>
+                                            <option value="Refused medicate">Refused medicate</option>
+                                        </select>
+                                    </div>
+                                </ul>
+                                <fieldset class="ui-grid-solo" id="unqual_reason_id" style="margin-top: 10px; margin-bottom: 10px; display:none">
+                                    <div class="ui-block-a" style="width:100%">
+                                        <input name="reason_noqualify" id="reason_noqualify_id placeholder="Reason not qualified" />
+                                    </div>
+                                </fieldset>
+                        </div>
+
+                        <fieldset class="ui-grid-a" id="concep_date" style="margin-top: 15px">
+                            <div class="ui-block-a" style="padding-top:15px">
+                                <label for="conception">Date of conception</label>
+                            </div>
+                            <div class="ui-block-b">
+                                <input type="date" name="conception_date" id="conception_date" />
+                            </div>
+                        </fieldset>
+                        <fieldset class="ui-grid-a" id="anticipated_date">
+                            <div class="ui-block-a" style="width: 45%;">
+                                <label for="delivery_date">Anticipated delivery date</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 50%;">
+                                <input type="date" name="delivery_date" id="delivery_date" />
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div data-role="footer" id="footer_1" data-position="fixed" data-tap-toggle="false" data-theme="c" style="display:none">
+                    <fieldset class="ui-grid-a" style="margin: 0 8% 0 8%;">
+                        <div class="ui-block-a">
+                            <a href="#demographic-page"  data-role="button" data-icon="arrow-l" data-inline="true" data-theme="d" >Back</a>
+                        </div>
+                        <div class="ui-block-b" style="width: auto; float:right">
+                            <a href="#nutrition-page" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b">Next</a>
+                        </div>
+                    </fieldset>
+                </div>
+                <div data-role="footer" id="footer_2" data-position="fixed" data-tap-toggle="false" style="display:none" data-theme="c">
+                    <fieldset class="ui-grid-a" style="margin: 0 8% 0 8%;">
+                        <div class="ui-block-a">
+                            <a href="#main-page"  data-role="button" data-icon="arrow-l" data-inline="true" data-theme="d" >Exit</a>
+                        </div>
+                        <div class="ui-block-b" style="width: auto; float:right">
+                            <a href="#nutrition-page" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b">Home Visit</a>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <!-- <End of medical page> -->
+
+            <div id="nutrition-page" data-role="page">
+                <div data-role="header" data-id="header" id="header" data-position="fixed" class="ui-header" style="background: lightgrey">
+                    <div class="ui-grid-c">
+                        <div class="ui-block-a" style="width: auto; margin: 5px;">
+                            <img src="img/MomLink-App-Logo2.png" alt="momlink logo" style="width:50px;height:50px; margin-top: 2px;">
+                        </div>
+                        <div class="ui-block-b" style="width: auto; margin-top: 7px;">
+                            <h2>MomLink</h2>
+                        </div>
+                        <div class="ui-block-d" style="margin: 5px; float:right;">
+                            <h2 style="magin-right: 10px; float:right;">
+                                <a href="#save-page" >Close</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div data-role="content" >
+                    <form id="nutrition-form" action="">
+                        <h2 id="nutrition" align="center" style="border-top:2px solid black; border-bottom: 1px solid black; margin-top: 15px">Nutrition Information</h2>
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="wic">WIC</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 50%; padding-top: 10px;">
+                                <select name="wic_vouchers" id="wic" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                    <option value="Appt Scheduled">Appt Scheduled</option>
+                                    <option value="Refused">Refused</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a" id="wic_appt_id" style="display:none">
+                            <div class="ui-block-a">
+                                <label for="wic_appt">When:</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 55%">
+                                <input type="date" name="wic_appt" id="wic_appt" />
+                            </div>
+                        </fieldset>
+
+                        <!-- <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="problems">Problems:</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 75%">
+                                <input type="text" name="problems" id="problems" />
+                            </div>
+                        </fieldset> -->
+
+                        <div class="nutri_items">
+                            <fieldset class="ui-grid-b nutri_class">
+                                <div class="ui-block-a" style="width: auto">
+                                    <label for="milk">Milk:</label>
+                                </div>
+                                <div class="ui-block-b" style="width: 32%; margin-left: 8px;">
+                                    <input type="text" name="dairy_amount" id="milk" />
+                                </div>
+                                <div class="ui-block-c" style="margin-left: 10px; margin-top: 15px">
+                                    <label for="serving">servings</label>
+                                </div>
+                            </fieldset>
+                            <fieldset class="ui-grid-b nutri_class">
+                                <div class="ui-block-a" style="width: auto">
+                                    <label for="meat">Meat:</label>
+                                </div>
+                                <div class="ui-block-b" style="width: 32%; margin-left: 8px;">
+                                    <input type="text" name="proteins_amount" id="meat" />
+                                </div>
+                                <div class="ui-block-c" style="margin-left: 10px; margin-top: 15px">
+                                    <label for="serving">servings</label>
+                                </div>
+                            </fieldset>
+                            <fieldset class="ui-grid-b nutri_class">
+                                <div class="ui-block-a" style="width: auto">
+                                    <label for="veg">Vegetable:</label>
+                                </div>
+                                <div class="ui-block-b" style="width: 32%; margin-left: 8px;">
+                                    <input type="text" name="vegetable_amount" id="veg" />
+                                </div>
+                                <div class="ui-block-c" style="margin-left: 10px; margin-top: 15px">
+                                    <label for="serving">servings</label>
+                                </div>
+                            </fieldset>
+                            <fieldset class="ui-grid-b nutri_class">
+                                <div class="ui-block-a" style="width: auto">
+                                    <label for="h2o">H2O:</label>
+                                </div>
+                                <div class="ui-block-b" style="width: 32%; margin-left: 8px;">
+                                    <input type="text" name="fluid_amount" id="h2o" />
+                                </div>
+                                <div class="ui-block-c" style="margin-left: 10px; margin-top: 15px">
+                                    <label for="serving">servings</label>
+                                </div>
+                            </fieldset>
+                            <fieldset class="ui-grid-b nutri_class">
+                                <div class="ui-block-a" style="width: auto">
+                                    <label for="fruit">Fruits:</label>
+                                </div>
+                                <div class="ui-block-b" style="width: 32%; margin-left: 8px;">
+                                    <input type="text" name="fruit_amount" id="fruit" />
+                                </div>
+                                <div class="ui-block-c" style="margin-left: 10px; margin-top: 15px">
+                                    <label for="serving">servings</label>
+                                </div>
+                            </fieldset>
+
+                            <div class="item_serving" style="display:none">
+                                <div id="milk_serving">
+                                    <label for="milk">Milk:</label>
+                                </div>
+                                <fieldset class="ui-grid-a">
+                                    <div class="ui-block-a" style="width: 32%; margin-left: 0px;">
+                                        <input type="text" name="cup" id="milk_cup" />
+                                    </div>
+                                    <div class="ui-block-b" style="width: auto">
+                                        <label for="milk_cup">cups</label>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="ui-grid-a">
+                                    <div class="ui-block-a" style="width: 32%; margin-left: 0px;">
+                                        <input type="text" name="cheese" id="cheese" />
+                                    </div>
+                                    <div class="ui-block-b" style="width: auto">
+                                        <label for="cheese">Ounces of cheese</label>
+                                    </div>
+                                </fieldset>
+                                <div id="meat_serving">
+                                    <label for="meat">Meat:</label>
+                                </div>
+                                <fieldset class="ui-grid-a">
+                                    <div class="ui-block-a" style="width: 32%; margin-left: 0px;">
+                                        <input type="text" name="meat_ounce" id="meat_ounce" />
+                                    </div>
+                                    <div class="ui-block-b" style="width: auto">
+                                        <label for="meat_ounce">ounces</label>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="ui-grid-a">
+                                    <div class="ui-block-a" style="width: 32%; margin-left: 0px;">
+                                        <input type="text" name="egg" id="egg" />
+                                    </div>
+                                    <div class="ui-block-b" style="width: auto">
+                                        <label for="egg">eggs</label>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="ui-grid-a">
+                                    <div class="ui-block-a" style="width: 32%; margin-left: 0px;">
+                                        <input type="text" name="peanutbutter" id="peanut" />
+                                    </div>
+                                    <div class="ui-block-b" style="width: auto">
+                                        <label for="peanut">tablespoons of peanutbutter</label>
+                                    </div>
+                                </fieldset>
+                                <div id="vegetable_serving">
+                                    <label for="vege">Vegetable:</label>
+                                </div>
+                                <fieldset class="ui-grid-a">
+                                    <div class="ui-block-a" style="width: 32%; margin-left: 0px;">
+                                        <input type="text" name="salad" id="salad" />
+                                    </div>
+                                    <div class="ui-block-b" style="width: auto">
+                                        <label for="salad">salad cups</label>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="ui-grid-a">
+                                    <div class="ui-block-a" style="width: 32%; margin-left: 0px;">
+                                        <input type="text" name="cooked_vege" id="cooked_vege" />
+                                    </div>
+                                    <div class="ui-block-b" style="width: auto">
+                                        <label for="cooked_vege">cups of cooked vegetables</label>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="ui-grid-a">
+                                    <div class="ui-block-a" style="width: 32%; margin-left: 0px;">
+                                        <input type="text" name="vege_juice" id="vege_juic" />
+                                    </div>
+                                    <div class="ui-block-b" style="width: auto">
+                                        <label for="vege_juic">vegetable juice cups</label>
+                                    </div>
+                                </fieldset>
+                                <div id="h2o_serving">
+                                    <label for="h2o">H2O:</label>
+                                </div>
+                                <fieldset class="ui-grid-a">
+                                    <div class="ui-block-a" style="width: 32%; margin-left: 0px;">
+                                        <input type="text" name="h2o" id="h2o_glasses" />
+                                    </div>
+                                    <div class="ui-block-b" style="width: auto">
+                                        <label for="h2o">glasses</label>
+                                    </div>
+                                </fieldset>
+                                <div id="fruit_serving">
+                                    <label for="fruit">Fruit:</label>
+                                </div>
+                                <fieldset class="ui-grid-a">
+                                    <div class="ui-block-a" style="width: 32%; margin-left: 0px;">
+                                        <input type="text" name="medium_whole" id="medium_whole" />
+                                    </div>
+                                    <div class="ui-block-b" style="width: auto">
+                                        <label for="medium_whole">medium whole</label>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="ui-grid-a">
+                                    <div class="ui-block-a" style="width: 32%; margin-left: 0px;">
+                                        <input type="text" name="chopped" id="chopped" />
+                                    </div>
+                                    <div class="ui-block-b" style="width: auto">
+                                        <label for="chopped">cup chopped</label>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="ui-grid-a">
+                                    <div class="ui-block-a" style="width: 32%; margin-left: 0px;">
+                                        <input type="text" name="fruit_juice" id="fruit_juice" />
+                                    </div>
+                                    <div class="ui-block-b" style="width: auto">
+                                        <label for="fruit_juice">cups of fruit juice</label>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="ui-grid-a">
+                                    <div class="ui-block-a" style="width: 32%; margin-left: 0px;">
+                                        <input type="text" name="dried_fruit" id="dried_fruit" />
+                                    </div>
+                                    <div class="ui-block-b" style="width: auto">
+                                        <label for="dried_fruit">dried fruit</label>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="bread">How many slices of bread do you have each day?</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 20%; padding-top: 10px;">
+                                <input name="bread" id="bread_id" />
+                            </div>
+                        </fieldset>
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="cereal">How many cups of cereals do you have each day?</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 20%; padding-top: 10px;">
+                                <input name="cereal" id="cereal_id" />
+                            </div>
+                        </fieldset>
+                        <fieldset class="ui-grid-a">
+                                <div class="ui-block-a" style="width: auto">
+                                    <label for="grains">Total Grains:</label>
+                                </div>
+                                <div class="ui-block-b" style="width: 32%; margin-left: 8px;">
+                                    <input type="text" name="total_grains" id="grains_id" />
+                                </div>
+                        </fieldset>
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="caffeine">How many times do you drink caffinated drinks in a day? </label>
+                            </div>
+                            <div class="ui-block-b" style="width: 20%; padding-top: 10px;">
+                                <input name="caffine_daily" id="caffine" />
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="adequate_food_supply">Adequate Food Supply:</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 45%; padding-top: 10px;">
+                                <select name="adequate_food" id="adequate_food_supply" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a" id="need_help" style="display:none">
+                            <div class="ui-block-a">
+                                <label for="food_issue_select">Do you need help with<br> inadequate food issue?</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 45%; padding-top: 20px;">
+                                <select name="food_issue_select" id="food_issue_select" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a" id="food_stamps_id" style="display:none">
+                            <div class="ui-block-a">
+                                <label for="food_stamps">Food Stamps:</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 35%">
+                                <input type="number" name="food_stamps" id="food_stamps" />
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a" id="tanf" style="display:none">
+                            <div class="ui-block-a">
+                                <label for="tanf">TANF:</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 35%">
+                                <input type="text" name="tanf" id="tanf" />
+                            </div>
+                        </fieldset>
+
+                        <div data-role="fieldcontain" class="ref-div" id="nutrition-ref-id"
+                        style="display:none">
+                            <h2 id="ref" align="center" style="border-top:2px solid black; border-bottom: 1px solid black; margin-top: 15px">Referral Information</h2>
+                            <h2 id="ref-name" align="left" style="margin-top:10px">Food&Nutritional Programs:</h2>
+                            <fieldset data-role="controlgroup">
+                                <label for="nutri-checkbox-1a">Division of Family Resources(Food Stamps Program)</label>
+                                <input type="checkbox" name="nutri-checkbox-1a" class="ref_information" id="nutri-checkbox-1a"/>
+                                <label for="nutri-checkbox-2a">WIC</label>
+                                <input type="checkbox" name="nutri-checkbox-2a" class="ref_information" id="nutri-checkbox-2a"/>
+                                <label for="nutri-checkbox-3a">BAM BAM</label>
+                                <input type="checkbox" name="nutri-checkbox-3a" class="ref_information" id="nutri-checkbox-3a"/>
+                                <label for="nutri-checkbox-4a">St. Vincent de Paul (Emergency Assistance, Food, Clothing/ Furniture)</label>
+                                <input type="checkbox" name="nutri-checkbox-4a" class="ref_information" id="nutri-checkbox-4a"/>
+                                <label for="nutri-checkbox-5a">Catholic Charities (Food Pantry)</label>
+                                <input type="checkbox" name="nutri-checkbox-5a" class="ref_information" id="nutri-checkbox-5a"/>
+                                <label for="nutri-checkbox-6a">La Casa de Amistad (Food Pantry)</label>
+                                <input type="checkbox" name="nutri-checkbox-6a" class="ref_information" id="nutri-checkbox-6a"/>
+                                <label for="nutri-checkbox-7a">Broadway Christian Church</label>
+                                <input type="checkbox" name="nutri-checkbox-7a" class="ref_information" id="nutri-checkbox-7a"/>
+                            </fieldset>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="footer" data-role="footer" data-id="footer1" data-position="fixed" data-tap-toggle="false" data-theme="c">
+                    <fieldset class="ui-grid-a" style="margin: 0 8% 0 8%;">
+                        <div class="ui-block-a">
+                            <a href="#medical-page"  data-role="button" data-icon="arrow-l" data-inline="true" data-theme="d" >Back</a>
+                        </div>
+                        <div class="ui-block-b" style="width: auto; float:right">
+                            <a href="#medication-page" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b" >Next</a>
+                        </div>
+                    </fieldset>
+                </div>
+            </div><!-- End of nutrition-page -->
+
+            <div id="medication-page" data-role="page">
+                <div data-role="header" data-id="header" id="header" data-position="fixed" class="ui-header" style="background: lightgrey">
+                    <div class="ui-grid-c">
+                        <div class="ui-block-a" style="width: auto; margin: 5px;">
+                            <img src="img/MomLink-App-Logo2.png" alt="momlink logo" style="width:50px;height:50px; margin-top: 2px;">
+                        </div>
+                        <div class="ui-block-b" style="width: auto; margin-top: 7px;">
+                            <h2>MomLink</h2>
+                        </div>
+                        <div class="ui-block-d" style="margin: 5px; float:right;">
+                            <h2 style="magin-right: 10px; float:right;">
+                                <a href="#save-page" >Close</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div data-role="content" >
+                    <form id="medication-form" action="">
+                        <h2 id="medication" align="center" style="border-top:2px solid black; border-bottom: 1px solid black; margin-top: 15px">Medication Information</h2>
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="pnv_select">PNV:</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 50%; padding-top: 10px; margin-bottom: 15px">
+                                <select name="pnv" id="pnv_select" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <div id="pnv_problem_id" style="display:none">
+                            <label for="problem_for_pnv">Do you have any PNV problems?</label>
+                            <fieldset class="ui-grid-a">
+                                <div id="pnv_problems" class="ui-block-a" style="width: 85%">
+                                    <input type="text" name="problem_for_pnv" id="problem_for_pnv" />
+                                </div>
+                                <div class="ui-block-b" style="width: 10%; margin-top: 1%">
+                                    <button id="more_problems_btn" name="more_problems_btn" data-icon="plus" data-iconpos="notext" data-theme="c"></button>
+                                </div>
+                            </fieldset>
+                        </div>
+
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="medication_select">Have you used drugs in this pregnancy?</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 50%; padding-top: 10px;">
+                                <select name="medication_select" id="medication_select" data-mini="true" data-theme="c">
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <div id="medication_name_id" style="display:none">
+                            <label for="medication_name">Name:</label>
+                            <input type="text" name="medication_name" id="medication_name"/>
+                        </div>
+
+                        <div id="medication_reason_id" style="display:none">
+                            <label for="reasons_for_medication">Reasons for Medication:</label>
+                            <fieldset class="ui-grid-a">
+                                <div id="more_reasons" class="ui-block-a" style="width: 85%">
+                                    <input type="text" name="medication_reason" id="reasons_for_medication" />
+                                </div>
+                                <div class="ui-block-b" style="width: 10%; margin-top: 1%;">
+                                    <button id="more_reasons_btn" name="more_reasons_btn" data-icon="plus" data-iconpos="notext" data-theme="c"></button>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="footer" data-role="footer" data-id="footer1" data-position="fixed" data-tap-toggle="false" data-theme="c">
+                    <fieldset class="ui-grid-a" style="margin: 0 8% 0 8%;">
+                        <div class="ui-block-a">
+                            <a href="#nutrition-page"  data-role="button" data-icon="arrow-l" data-inline="true" data-theme="d" >Back</a>
+                        </div>
+                        <div class="ui-block-b" style="width: auto; float:right">
+                            <a href="#smoking-page" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b" >Next</a>
+                        </div>
+                    </fieldset>
+                </div>
+            </div><!-- medication-page ends -->
+
+            <div id="smoking-page" data-role="page">
+                <div data-role="header" data-id="header" id="header" data-position="fixed" class="ui-header" style="background: lightgrey">
+                    <div class="ui-grid-c">
+                        <div class="ui-block-a" style="width: auto; margin: 5px;">
+                            <img src="img/MomLink-App-Logo2.png" alt="momlink logo" style="width:50px;height:50px; margin-top: 2px;">
+                        </div>
+                        <div class="ui-block-b" style="width: auto; margin-top: 7px;">
+                            <h2>MomLink</h2>
+                        </div>
+                        <div class="ui-block-d" style="margin: 5px; float:right;">
+                            <h2 style="magin-right: 10px; float:right;">
+                                <a href="#save-page" >Close</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div data-role="content" >
+                    <form id="smoking-form" action="">
+                        <h2 id="smoking" align="center" style="border-top:2px solid black; border-bottom: 1px solid black; margin-top: 15px">Smoking Information</h2>
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="smoking_select">Smoking</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 50%; padding-top: 10px;">
+                                <select name="smoke" id="smoking_select" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="smoking_number">Number/day:</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 35%">
+                                <input type="number" name="amount_tobacco" id="smoking_number" />
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="2nd_hand_smoking_select">2nd Hand Smoking</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 50%; padding-top: 10px;">
+                                <select name="pregnancy_secondhand_tobacco" id="2nd_hand_smoking_select" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="alcohol">Alcohol: </label>
+                            </div>
+                            <div class="ui-block-b" style="padding-top: 10px;">
+                                <select name="alcohol" id="alcohol" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <div data-role="fieldcontain" class="ref-div" id="smoking-ref-id"
+                        style="display:none">
+                             <h2 id="ref" align="center" style="border-top:2px solid black; border-bottom: 1px solid black; margin-top: 15px">Referral Information</h2>
+                             <h2 id="ref-name" align="left" style="margin-top:10px">Addiction Servcies:</h2>
+                            <fieldset data-role="controlgroup">
+                                <label for="smok-checkbox-1a">PEPP</label>
+                                <input type="checkbox" name="smok-checkbox-1a" class="ref_information" id="smok-checkbox-1a"/>
+                                <label for="smok-checkbox-2a">Victory Clinic</label>
+                                <input type="checkbox" name="smok-checkbox-2a"class="ref_information" id="smok-checkbox-2a"/>
+                                <label for="smok-checkbox-3a">Life Treatment Center</label>
+                                <input type="checkbox" name="smok-checkbox-3a" class="ref_information" id="smok-checkbox-3a"/>
+                                <label for="smok-checkbox-4a">Salvation Army(Adult Rehabilitation Center)</label>
+                                <input type="checkbox" name="smok-checkbox-4a" class="ref_information" id="smok-checkbox-4a"/>
+                                <label for="smok-checkbox-5a">YWCA</label>
+                                <input type="checkbox" name="smok-checkbox-5a" class="ref_information" id="smok-checkbox-5a"/>
+                                <label for="smok-checkbox-6a">Memorial Epworth Center (Inpatient)</label>
+                                <input type="checkbox" name="smok-checkbox-6a" class="ref_information" id="smok-checkbox-6a"/>
+                                <label for="smok-checkbox-7a">Oaklawn(Outpatient)</label>
+                                <input type="checkbox" name="smok-checkbox-7a" class="ref_information" id="smok-checkbox-7a"/>
+                            </fieldset>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="footer" data-role="footer" data-id="footer1" data-position="fixed" data-tap-toggle="false" data-theme="c">
+                    <fieldset class="ui-grid-a" style="margin: 0 8% 0 8%;">
+                        <div class="ui-block-a">
+                            <a href="#medication-page"  data-role="button" data-icon="arrow-l" data-inline="true" data-theme="d" >Back</a>
+                        </div>
+                        <div class="ui-block-b" style="width: auto; float:right">
+                            <a href="#condition-page" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b" >Next</a>
+                        </div>
+                    </fieldset>
+                </div>
+            </div><!-- End of smoking-page  -->
+
+            <div id="condition-page" data-role="page">
+                <div data-role="header" data-id="header" id="header" data-position="fixed" class="ui-header" style="background: lightgrey">
+                    <div class="ui-grid-c">
+                        <div class="ui-block-a" style="width: auto; margin: 5px;">
+                            <img src="img/MomLink-App-Logo2.png" alt="momlink logo" style="width:50px;height:50px; margin-top: 2px;">
+                        </div>
+                        <div class="ui-block-b" style="width: auto; margin-top: 7px;">
+                            <h2>MomLink</h2>
+                        </div>
+                        <div class="ui-block-d" style="margin: 5px; float:right;">
+                            <h2 style="magin-right: 10px; float:right;">
+                                <a href="#save-page" >Close</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div data-role="content" >
+                    <form id="condition-form" action="">
+                        <h2 id="condition" align="center" style="border-top:2px solid black; border-bottom: 1px solid black; margin-top: 15px">Condition Information</h2>
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="fetal_movement">Fetal Movement:</label>
+                            </div>
+                            <div class="ui-block-b" style="width: 50%; padding-top: 10px;">
+                                <select name="fetal_movement" class="condition_info" id="fetal_movement" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="contractions">Contractions: </label>
+                            </div>
+                            <div class="ui-block-b" style="width: 50%; padding-top: 10px;">
+                                <select name="contractions" class="condition_info" id="contractions" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="headaches">Headaches: </label>
+                            </div>
+                            <div class="ui-block-b" style="width: 50%; padding-top: 10px;">
+                                <select name="headaches" class="condition_info" id="headaches" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="swelling">Swelling: </label>
+                            </div>
+                            <div class="ui-block-b" style="padding-top: 10px;">
+                                <select name="swelling" class="condition_info" id="swelling" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="bleeding">Bleeding: </label>
+                            </div>
+                            <div class="ui-block-b" style="padding-top: 10px;">
+                                <select name="bleeding" class="condition_info" id="bleeding" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="pain">Pain/Discomforts: </label>
+                            </div>
+                            <div class="ui-block-b" style="padding-top: 10px;">
+                                <select name="pain" class="condition_info" id="pain" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <label for="infections">Infections: </label>
+                            </div>
+                            <div class="ui-block-b" style="padding-top: 10px;">
+                                <select name="infections" class="condition_info" id="infections" data-mini="true" data-theme="c" >
+                                    <option value="Choose one">Choose one</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <div id="other_desc" style="display:none">
+                            <label for="what_infection">Other_desc:</label>
+                            <input type="text" name="infection_desc" id="what_infection" />
+                        </div>
+
+                        <label for="home_visit_date">Home Visit Schedule for:</label>
+                        <input type="date" name="home_visit_date" id="home_visit_date" />
+                        <div data-role="fieldcontain" class="ref-div" id="condition-ref-id"
+                        style="display:none">
+                             <h2 id="ref" align="center" style="border-top:2px solid black; border-bottom: 1px solid black; margin-top: 15px">Referral Information</h2>
+                             <h2 id="ref-name" align="left" style="margin-top:10px">Health Care Providers:</h2>
+                            <fieldset data-role="controlgroup">
+                                <label for="provider-checkbox-1a">H+B:Vealth Care Providers</label>
+                                <input type="checkbox" name="provider-checkbox-1a" class="ref_information" id="provider-checkbox-1a"/>
+                                <label for="provider-checkbox-2a">SJCHD Immunization Clinics</label>
+                                <input type="checkbox" name="provider-checkbox-2a" class="ref_information" id="provider-checkbox-2a"/>
+                            </fieldset>
+                        </div>
+
+                    </form>
+                </div>
+                <div id="footer" data-role="footer" data-id="footer1" data-position="fixed" data-tap-toggle="false" data-theme="c">
+                    <fieldset class="ui-grid-b" style="margin: 0 8% 0 8%;">
+                        <div class="ui-block-a">
+                            <a href="#smoking-page" data-role="button" data-icon="arrow-l" data-inline="true" data-theme="d" >Back</a>
+                        </div>
+                        <div class="ui-block-b">
+                            <a href="#navigation_page" data-role="button" data-inline="true" data-theme="d">Navigation Page</a>
+                        </div>
+                        <div class="ui-block-c" style="width: auto; float:right">
+                            <a href="#save-page" id="submit_btn" name="submit" data-role="button" data-icon="check" data-iconpos="right" data-theme="b" >Next</a>
+                        </div>
+                    </fieldset>
+                </div>
+            </div><!-- condition-page ends -->
+
+            <div id="save-page" data-role="page">
+                <div data-role="header" data-id="header" id="header" data-position="fixed" class="ui-header" style="background: lightgrey">
+                    <div class="ui-grid-b">
+                        <div class="ui-block-a" style="width: auto; margin: 5px;">
+                            <img src="img/MomLink-App-Logo2.png" alt="momlink logo" style="width:50px;height:50px; margin-top: 2px;">
+                        </div>
+                        <div class="ui-block-b" style="width: auto; margin-top: 7px;">
+                            <h2>MomLink</h2>
+                        </div>
+                    </div>
+                </div>
+                <div style="width: auto; float:center">
+                    <a href="#summary-page" data-role="button" class="submit_stats" id="complete" data-theme="c" style="width: auto; margin: 15% 20% 0" >Save as Complete</a>
+                </div>
+                <div style="width: auto; float:center">
+                    <a href="#summary-page" data-role="button" class="submit_stats" id="incomplete" data-theme="c" style="width: auto; margin: 10% 20% 0" >Save as Incomplete</a>
+                </div>
+                <div style="width: auto; float:center">
+                    <a href="#" class="logout_cancel" data-role="button" data-theme="c" style="width: auto; margin: 10% 20% 0" >Cancel</a>
+                </div>
+                <div style="width: auto; float:center">
+                    <a href="#login-page" data-role="button" data-theme="c" style="width: auto; margin: 10% 20% 0" >Exit without Saving</a>
+                </div>
+
+                <!-- <div data-role="footer" data-position="fixed">
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#demographic-page">Demographic</a></li>
+                            <li><a href="#nutrition-page">Nutrition</a></li>
+                            <li><a href="#medication-page">Medication</a></li>
+                            <li><a href="#smoking-page">Smoking</a></li>
+                            <li><a href="#condition-page">Condition</a></li>
+                        </ul>
+                    </div>
+                </div> -->
+
+            </div><!-- save-page ends -->
+
+            <div id="summary-page"data-role="page">
+                <div data-role="header" data-id="header" id="header" data-position="fixed" class="ui-header" style="background: lightgrey">
+                    <div class="ui-grid-c">
+                        <div class="ui-block-a" style="width: auto; margin: 5px;">
+                            <img src="img/MomLink-App-Logo2.png" alt="momlink logo" style="width:50px;height:50px; margin-top: 2px;">
+                        </div>
+                        <div class="ui-block-b" style="width: auto; margin-top: 7px;">
+                            <h2>MomLink</h2>
+                        </div>
+                        <div class="ui-block-d" style="margin: 5px; float:right;">
+                            <h2 style="magin-right: 10px; float:right;">
+                                <a href="#save-page" >Close</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div id="summary-page-content" data-role="content">
+                </div>
+            </div><!-- summary-page ends -->
+
+        <script type="text/javascript" src="js/index.js"></script>
+
+        <script type="text/javascript">
+            app.initialize();
+        </script>
+    </body>
+</html>
