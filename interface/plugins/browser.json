@@ -1,0 +1,21 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "edu.nd.ptang.momlink"
+        },
+        "cordova-sqlite-storage": {
+            "PACKAGE_NAME": "edu.nd.ptang.momlink"
+        },
+        "org.apache.cordova.network-information": {
+            "PACKAGE_NAME": "edu.nd.ptang.momlink"
+        }
+    },
+    "dependent_plugins": {}
+}
